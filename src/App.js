@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import BeginningScreen from "./ui/BeginningScreen/BeginningScreen";
-import StartingScreen from "./ui/StartingScreen/StartingScreen";
+import HomeScreen from "./ui/HomeScreen/HomeScreen";
+import QuestionDisplay from "./ui/QuestionDisplay/QuestionDisplay";
 import { Route, Routes, Redirect } from "react-router-dom";
 
 export default function App() {
@@ -14,7 +15,9 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="/" exact element={<StartingScreen />}></Route>
+      <Route path="/" exact element={<HomeScreen />}></Route>
+      <Route path="/begin" exact element={<BeginningScreen />}></Route>
+      <Route path="/question1" exact element={<QuestionDisplay />}></Route>
     </Routes>
   );
 }
