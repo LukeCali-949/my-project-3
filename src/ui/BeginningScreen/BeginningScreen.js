@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { useParams, Route, Link, useRouteMatch } from "react-router-dom";
 
 const BeginningScreen = () => {
-  const [questions, setQuestions] = useState([]);
   const onBeginClick = () => {
     fetch(
       "https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple"
     )
       .then((res) => res.json())
-      .then((data) => setQuestions(data));
+      .then((data) => console.log(data));
   };
 
   return (
