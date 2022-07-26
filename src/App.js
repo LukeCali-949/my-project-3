@@ -1,23 +1,33 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import BeginningScreen from "./ui/BeginningScreen/BeginningScreen";
 import HomeScreen from "./ui/HomeScreen/HomeScreen";
 import QuestionDisplay from "./ui/QuestionDisplay/QuestionDisplay";
 import { Route, Routes, Redirect } from "react-router-dom";
+import QuestionContext from "./store/questions-context";
 
 export default function App() {
-  useEffect(() => {
-    fetch(
-      "https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple"
-    )
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  }, []);
+  const [questions, setQuestions] = useState([]);
+
+  // useEffect(() => {
+  //   fetch(
+  //     "https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple"
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => console.log(data));
+  // }, []);
 
   return (
     <Routes>
       <Route path="/" exact element={<HomeScreen />}></Route>
-      <Route path="/begin" exact element={<BeginningScreen />}></Route>
-      <Route path="/question1" exact element={<QuestionDisplay />}></Route>
+      <Route
+        path="/begin"
+        exact
+        element={<BeginningScreen setQuestions={setQuestions} />}
+      ></Route>
+      <Route
+        path="/question/:questionId"
+        element={<QuestionDisplay questions={questions} />}
+      ></Route>
     </Routes>
   );
 }

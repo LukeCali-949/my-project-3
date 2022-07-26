@@ -1,22 +1,85 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, Route, Link, useRouteMatch } from "react-router-dom";
+import QuestionContext from "../../store/questions-context";
 
-const BeginningScreen = () => {
+const BeginningScreen = (props) => {
+  // const ctx = useContext(QuestionContext);
+
+  const [category, setCategory] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+
+  useEffect(() => {
+    if (category && difficulty) {
+      if (category === "random") {
+        fetch(
+          `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`
+        )
+          .then((res) => res.json())
+          .then((data) => props.setQuestions(data.results));
+      } else {
+        const arr = [
+          "general-knowledge",
+          "entertainment-books",
+          "entertainment-film",
+          "entertainment-music",
+          "entertainment-musicals-theatres",
+          "entertainment-video-games",
+          "entertainment-board-games",
+          "science-nature",
+          "computers",
+          "mathmatics",
+          "mythology",
+          "sports",
+          "geography",
+          "history",
+          "politics",
+          "art",
+          "celebrites",
+          "animals",
+        ];
+        fetch(
+          `https://opentdb.com/api.php?amount=10&category=${
+            arr.indexOf(category) + 9
+          }&difficulty=${difficulty}&type=multiple`
+        )
+          .then((res) => res.json())
+          .then((data) => props.setQuestions(data.results));
+      }
+    }
+  }, [category, difficulty]);
+
+  const onChangeCategory = (event) => {
+    setCategory(event.target.value);
+    // console.log(category, difficulty);
+  };
+
+  const onChangeDifficulty = (event) => {
+    // console.log(event.target);
+    setDifficulty(event.target.value);
+    // console.log(category, difficulty);
+  };
+
+  // useEffect(() => {
+  //   console.log(ctx.questions);
+  // }, [ctx.questions]);
+
   const onBeginClick = () => {
-    fetch(
-      "https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple"
-    )
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+    console.log("hey");
+    // fetch(
+    //   "https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple"
+    // )
+    //   .then((res) => res.json())
+    //   .then((data) => ctx.onGetQuestions(data.results));
   };
 
   return (
     <>
       <div className="w-full bg-golden-rod h-screen absolute -z-10"></div>
-      <div class="flex justify-center items-center text-center  min-h-screen">
-        <div class="rounded-lg shadow-lg bg-white max-w-xl h-96">
-          <div class="p-6 justify-center">
-            <h5 class="text-gray-900 text-xl font-medium mb-2 justify-self-center  font-press-start">
+
+      <div className="flex justify-center items-center text-center  min-h-screen">
+        <div className="rounded-lg shadow-lg bg-white max-w-xl h-96">
+          <div className="p-6 justify-center">
+            <h5 className="text-gray-900 text-xl font-medium mb-2 justify-self-center  font-press-start">
               Please Pick Your Configurations
             </h5>
             {/* <p class="text-gray-700 text-base mb-4 text-left">
@@ -28,7 +91,9 @@ const BeginningScreen = () => {
               <h5>Category:</h5>
               <select
                 id="countries"
-                class="max-w-[200px]  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="max-w-[200px]  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={onChangeCategory}
+                value={category}
               >
                 <option selected="">Choose a trivia category</option>
                 <option value="general-knowledge">General Knowledge</option>
@@ -37,37 +102,38 @@ const BeginningScreen = () => {
                 <option value="art">Art</option>
               </select>
               <h5>or</h5>
-              <a
-                href="#_"
-                class="relative px-5 py-3 overflow-hidden font-medium text-gray-600 bg-gray-300 border border-gray-100 rounded-lg shadow-inner group"
+              <button
+                type="button"
+                class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                value="random"
+                onClick={onChangeCategory}
               >
-                <span class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"></span>
-                <span class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"></span>
-                <span class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
-                <span class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
-                <span class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"></span>
-                <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">
-                  Random
-                </span>
-              </a>
+                Random
+              </button>
             </div>
             <div className="flex space-x-3 items-center mt-5">
               <h5>Difficulty:</h5>
               <button
                 type="button"
-                class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                value="easy"
+                onClick={onChangeDifficulty}
               >
                 Easy
               </button>
               <button
                 type="button"
-                class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+                className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+                value="medium"
+                onClick={onChangeDifficulty}
               >
                 Medium
               </button>
               <button
                 type="button"
-                class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                value="hard"
+                onClick={onChangeDifficulty}
               >
                 Hard
               </button>
@@ -75,7 +141,7 @@ const BeginningScreen = () => {
 
             <Link
               className="relative inline-block px-4 py-2 font-medium group cursor-pointer text-center mt-12"
-              to="/question1"
+              to="/question/1"
               onClick={onBeginClick}
             >
               <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>

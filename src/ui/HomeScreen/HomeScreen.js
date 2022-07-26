@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useParams, Route, Link, useRouteMatch } from "react-router-dom";
+import QuestionContext from "../../store/questions-context";
 
 const HomeScreen = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -9,7 +10,6 @@ const HomeScreen = () => {
   return (
     <div>
       <div className="w-full bg-golden-rod h-screen absolute -z-10"></div>
-
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-c font-press-start mb-3">
           Welcome to ultimate trivia!

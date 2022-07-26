@@ -3,5 +3,20 @@
 @tailwind utilities;
 
 .container {
-  @apply w-screen h-screen flex justify-center items-center max-w-screen-xl p-8 my-0;
+  @apply w-screen h-screen flex justify-center items-center max-w-7xl p-8 my-0 mx-auto;
+}
+
+.hud-prefix {
+  @apply text-center text-3xl;
+}
+
+.choice-container {
+  @apply flex mb-3 w-full rounded bg-blue-600 text-5xl;
+}
+.choice-container:hover {
+  @apply cursor-pointer  scale-[1.02] duration-100 ease-in-out shadow-[0_0.4rem_1.4rem_0_rgba(6,103,247,0.5)];
+}
+
+.choice-prefix {
+  @apply py-4 px-5 text-white;
 }
