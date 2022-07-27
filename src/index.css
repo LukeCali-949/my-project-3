@@ -11,7 +11,7 @@
 }
 
 .choice-container {
-  @apply flex mb-3 w-full rounded bg-blue-600 text-5xl;
+  @apply flex mb-3 w-full rounded bg-blue-600 text-3xl;
 }
 .choice-container:hover {
   @apply cursor-pointer  scale-[1.02] duration-100 ease-in-out shadow-[0_0.4rem_1.4rem_0_rgba(6,103,247,0.5)];

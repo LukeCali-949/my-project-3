@@ -7,6 +7,7 @@ const BeginningScreen = (props) => {
 
   const [category, setCategory] = useState("");
   const [difficulty, setDifficulty] = useState("");
+  const [responseCode, setResponseCode] = useState("");
 
   useEffect(() => {
     if (category && difficulty) {
@@ -15,7 +16,11 @@ const BeginningScreen = (props) => {
           `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`
         )
           .then((res) => res.json())
-          .then((data) => props.setQuestions(data.results));
+          .then((data) => {
+            props.setQuestions(data.results);
+            setResponseCode(data.response_code);
+            console.log(responseCode);
+          });
       } else {
         const arr = [
           "general-knowledge",
@@ -39,11 +44,16 @@ const BeginningScreen = (props) => {
         ];
         fetch(
           `https://opentdb.com/api.php?amount=10&category=${
-            arr.indexOf(category) + 9
+            arr.indexOf(category) + 10
           }&difficulty=${difficulty}&type=multiple`
         )
           .then((res) => res.json())
-          .then((data) => props.setQuestions(data.results));
+          .then((data) => {
+            console.log(data);
+            props.setQuestions(data.results);
+            setResponseCode(data.response_code);
+            console.log(responseCode);
+          });
       }
     }
   }, [category, difficulty]);
@@ -139,17 +149,20 @@ const BeginningScreen = (props) => {
               </button>
             </div>
 
-            <Link
-              className="relative inline-block px-4 py-2 font-medium group cursor-pointer text-center mt-12"
-              to="/question/1"
-              onClick={onBeginClick}
-            >
-              <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
-              <span className="absolute inset-0 w-full h-full bg-white border-2 border-black group-hover:bg-black"></span>
-              <span className="relative text-black group-hover:text-white">
-                Click To Begin
-              </span>
-            </Link>
+            {responseCode === 0 && (
+              <Link
+                className="relative inline-block px-4 py-2 font-medium group cursor-pointer text-center mt-12"
+                to="/question/1"
+                onClick={onBeginClick}
+                disabled
+              >
+                <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
+                <span className="absolute inset-0 w-full h-full bg-white border-2 border-black group-hover:bg-black"></span>
+                <span className="relative text-black group-hover:text-white">
+                  Click To Begin
+                </span>
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import HomeScreen from "./ui/HomeScreen/HomeScreen";
 import QuestionDisplay from "./ui/QuestionDisplay/QuestionDisplay";
 import { Route, Routes, Redirect } from "react-router-dom";
 import QuestionContext from "./store/questions-context";
+import ResultsDisplay from "./ui/ResultsDisplay/ResultsDisplay";
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -28,6 +29,7 @@ export default function App() {
         path="/question/:questionId"
         element={<QuestionDisplay questions={questions} />}
       ></Route>
+      <Route path="/results" element={<ResultsDisplay />}></Route>
     </Routes>
   );
 }
