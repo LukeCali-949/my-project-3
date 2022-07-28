@@ -25,9 +25,11 @@ const shuffledArr = shuffle([0, 1, 2, 3]);
 
 const QuestionDisplay = (props) => {
   const [chosenAnswer, setChosenAnswer] = useState("Not Selected");
+  const [rightOrWrong, setRightOrWrong] = useState("");
 
   const { questionId } = useParams();
 
+  const correctAnswer = props.questions[questionId - 1].correct_answer;
   let answerChoices = [
     ...props.questions[questionId - 1].incorrect_answers,
     props.questions[questionId - 1].correct_answer,
@@ -43,19 +45,34 @@ const QuestionDisplay = (props) => {
   }
   answerChoices = shuffleArray(shuffledArr, answerChoices);
 
-  console.log(answerChoices);
+  // console.log(answerChoices);
 
   let question = props.questions[questionId - 1].question
     .replaceAll("&#039;", "'")
     .replaceAll("&#033;", "!")
     .replaceAll("&#034;", '"')
-    .replaceAll("&quot;", '"');
-  console.log(props.questions);
+    .replaceAll("&quot;", '"')
+    .replaceAll("&euml;", "ë")
+    .replaceAll("&ldquo;", '"')
+    .replaceAll("&rdquo;", '"')
+    .replaceAll("&deg;", "°");
+  // console.log(props.questions);
 
   const onClickEvent = (event) => {
     event.preventDefault();
-    console.log(event.target.id);
+    const letterIndex = ["A", "B", "C", "D"][
+      answerChoices.indexOf(correctAnswer)
+    ];
+    // console.log(correctAnswer);
+    // console.log(event.target.textContent);
+    // console.log(letterIndex, event.target.id);
+    // console.log(correctAnswer, event.target.textContent);
+
+    letterIndex == event.target.id
+      ? setRightOrWrong("right")
+      : setRightOrWrong("wrong");
     setChosenAnswer(event.target.id);
+    // console.log(rightOrWrong);
   };
 
   const questions = answerChoices.map((questionAnswer, index) => {
@@ -77,7 +94,11 @@ const QuestionDisplay = (props) => {
               .replaceAll("&#039;", "'")
               .replaceAll("&#033;", "!")
               .replaceAll("&#034;", "'")
-              .replaceAll("&quot;", '"')}
+              .replaceAll("&quot;", '"')
+              .replaceAll("&euml;", "ë")
+              .replaceAll("&ldquo;", '"')
+              .replaceAll("&rdquo;", '"')
+              .replaceAll("&deg;", "°")}
           </p>
         </div>
       </>
@@ -93,14 +114,22 @@ const QuestionDisplay = (props) => {
     <>
       <div className="w-full bg-[#0d1137] h-screen absolute -z-10"></div>
       <div className=" flex flex-col max-w-[50rem] items-center justify-center h-screen  mx-auto font-press-start">
-        <h1 className="text-white text-3xl absolute top-24 max-w-4xl">
-          {question}
-        </h1>
+        <h1 className="text-white text-3xl max-w-4xl mb-10">{question}</h1>
         <h1 className="text-white">{`Question: ${questionId}/10`}</h1>
         {questions}
         <h1 className="text-white">{`Your Answer: ${chosenAnswer}`}</h1>
+        {/* <h1 className="text-white">{`Your answer is: ${rightOrWrong}`}</h1> */}
+        {chosenAnswer === "Not Selected" && (
+          <div className="absolute px-[250px] py-[70px] bg-transparent top-[720px] z-20 opacity-10 hover:cursor-not-allowed"></div>
+        )}
+
         <Link
           className="relative inline-block px-4 py-2 font-medium group cursor-pointer text-center mt-12"
+          onClick={() => {
+            props.onAddCorrectAnswer(rightOrWrong);
+            setRightOrWrong("");
+            setChosenAnswer("Not Selected");
+          }}
           to={
             Number(questionId) !== 10
               ? `/question/${Number(questionId) + 1}`
@@ -110,7 +139,7 @@ const QuestionDisplay = (props) => {
           <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
           <span className="absolute inset-0 w-full h-full bg-white border-2 border-black group-hover:bg-black"></span>
           <span className="relative text-black group-hover:text-white">
-            Click To Confirm
+            Click to Confirm
           </span>
         </Link>
       </div>

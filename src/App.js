@@ -8,14 +8,19 @@ import ResultsDisplay from "./ui/ResultsDisplay/ResultsDisplay";
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
+  const [correctArr, setCorrectArr] = useState([]);
 
-  // useEffect(() => {
-  //   fetch(
-  //     "https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple"
-  //   )
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data));
-  // }, []);
+  const onAddCorrectAnswer = (val) => {
+    setCorrectArr((prevState) => [...prevState, val]);
+  };
+
+  const resetAnswerArray = () => {
+    setCorrectArr([]);
+  };
+
+  useEffect(() => {
+    // window.location.reload(false);
+  }, []);
 
   return (
     <Routes>
@@ -27,9 +32,23 @@ export default function App() {
       ></Route>
       <Route
         path="/question/:questionId"
-        element={<QuestionDisplay questions={questions} />}
+        element={
+          <QuestionDisplay
+            questions={questions}
+            onAddCorrectAnswer={onAddCorrectAnswer}
+          />
+        }
       ></Route>
-      <Route path="/results" element={<ResultsDisplay />}></Route>
+      <Route
+        path="/results"
+        element={
+          <ResultsDisplay
+            correctArr={correctArr}
+            resetAnswerArray={resetAnswerArray}
+            questions={questions}
+          />
+        }
+      ></Route>
     </Routes>
   );
 }

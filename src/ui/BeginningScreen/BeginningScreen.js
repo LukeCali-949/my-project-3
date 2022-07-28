@@ -5,12 +5,12 @@ import QuestionContext from "../../store/questions-context";
 const BeginningScreen = (props) => {
   // const ctx = useContext(QuestionContext);
 
-  const [category, setCategory] = useState("");
-  const [difficulty, setDifficulty] = useState("");
+  const [category, setCategory] = useState("Not Selected");
+  const [difficulty, setDifficulty] = useState("Not Selected");
   const [responseCode, setResponseCode] = useState("");
 
   useEffect(() => {
-    if (category && difficulty) {
+    if (category !== "Not Selected" && difficulty !== "Not Selected") {
       if (category === "random") {
         fetch(
           `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`
@@ -41,6 +41,11 @@ const BeginningScreen = (props) => {
           "art",
           "celebrites",
           "animals",
+          "vehicles",
+          "entertainment-comics",
+          "gadgets",
+          "anime-manga",
+          "cartoons-animation",
         ];
         fetch(
           `https://opentdb.com/api.php?amount=10&category=${
@@ -74,7 +79,7 @@ const BeginningScreen = (props) => {
   // }, [ctx.questions]);
 
   const onBeginClick = () => {
-    console.log("hey");
+    // console.log("hey");
     // fetch(
     //   "https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple"
     // )
@@ -84,10 +89,10 @@ const BeginningScreen = (props) => {
 
   return (
     <>
-      <div className="w-full bg-golden-rod h-screen absolute -z-10"></div>
+      <div className="w-full bg-[#0d1137] h-screen absolute -z-10"></div>
 
-      <div className="flex justify-center items-center text-center  min-h-screen">
-        <div className="rounded-lg shadow-lg bg-white max-w-xl h-96">
+      <div className="flex justify-center items-center text-center  min-h-screen font-press-start">
+        <div className="rounded-lg shadow-lg bg-white max-w-xl h-[450px]">
           <div className="p-6 justify-center">
             <h5 className="text-gray-900 text-xl font-medium mb-2 justify-self-center  font-press-start">
               Please Pick Your Configurations
@@ -98,23 +103,51 @@ const BeginningScreen = (props) => {
             </p> */}
 
             <div className="flex space-x-3 items-center mt-5">
-              <h5>Category:</h5>
+              <h5 className="">Category:</h5>
               <select
                 id="countries"
                 className="max-w-[200px]  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 onChange={onChangeCategory}
                 value={category}
               >
-                <option selected="">Choose a trivia category</option>
+                <option selected="">Choose category</option>
+                <option value="sports">Sports</option>
                 <option value="general-knowledge">General Knowledge</option>
                 <option value="mythology">Mythology</option>
-                <option value="sports">Sports</option>
-                <option value="art">Art</option>
+                <option value="entertainment-film">Entertainment: Films</option>
+                <option value="entertainment-music">
+                  Entertainment: Music
+                </option>
+                <option value="entertainment-musicals-theatres">
+                  Entertainment: Musicals & Theatres
+                </option>
+                <option value="entertainment-video-games">
+                  Entertainment: Video Games
+                </option>
+                <option value="entertainment-board-games">
+                  Entertainment: Board Games
+                </option>
+                <option value="entertainment-comics">
+                  Entertainment: Comics
+                </option>
+                <option value="science-nature">
+                  Nature and the Wilderness
+                </option>
+                <option value="computers">Computer Science</option>
+                <option value="mathmatics">Mathmatics</option>
+                <option value="geography">Geography</option>
+                <option value="history">History</option>
+                <option value="politics">Politics</option>
+                <option value="celebrites">Celebrites</option>
+                <option value="animals">Animals</option>
+                <option value="vehicles">Vehicles</option>
+                <option value="anime-manga">Anime & Manga</option>
+                <option value="cartoons-animation">Cartoons & Animation</option>
               </select>
               <h5>or</h5>
               <button
                 type="button"
-                class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 mt-2.5"
                 value="random"
                 onClick={onChangeCategory}
               >
@@ -122,7 +155,7 @@ const BeginningScreen = (props) => {
               </button>
             </div>
             <div className="flex space-x-3 items-center mt-5">
-              <h5>Difficulty:</h5>
+              <h5 className="">Difficulty:</h5>
               <button
                 type="button"
                 className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
@@ -148,10 +181,22 @@ const BeginningScreen = (props) => {
                 Hard
               </button>
             </div>
+            <h1
+              className={`text-left  mt-5 ${
+                category !== "Not Selected" ? "text-green-600" : "text-red-600"
+              }`}
+            >{`Chosen Category: ${category} `}</h1>
+            <h1
+              className={`text-left  mt-5 ${
+                difficulty !== "Not Selected"
+                  ? "text-green-600"
+                  : "text-red-600"
+              }`}
+            >{`Chosen Difficulty: ${difficulty} `}</h1>
 
-            {responseCode === 0 && (
+            {(responseCode === 0 && (
               <Link
-                className="relative inline-block px-4 py-2 font-medium group cursor-pointer text-center mt-12"
+                className="relative inline-block px-4 py-2 font-medium group cursor-pointer text-center mt-12 "
                 to="/question/1"
                 onClick={onBeginClick}
                 disabled
@@ -162,6 +207,10 @@ const BeginningScreen = (props) => {
                   Click To Begin
                 </span>
               </Link>
+            )) || (
+              <h1 className="text-center mt-12 font-medium">
+                One moment please...
+              </h1>
             )}
           </div>
         </div>
