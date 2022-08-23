@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AudioPlayer from "../../extracomponents/AudioPlayer/AudioPlayer";
+import AudioPlayer from "../../extraComponents/AudioPlayer/AudioPlayer";
 import wiiMusic1 from "../../audio/cocomall.mp3";
 import wiiMusic2 from "../../audio/lastplacemkwii.mp3";
 import wiiMusic3 from "../../audio/firstplacemkwii.mp3";
@@ -8,10 +8,16 @@ import afterDark from "../../audio/mrkittyaftdark.mp3";
 
 const ResultsDisplay = (props) => {
   const [isClicked, setIsClicked] = useState(false);
+  const [allCorrect, setAllCorrect] = useState(false);
 
   const countOccurrences = (arr, val) =>
     arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
   const rightAnswers = countOccurrences(props.correctArr, "right");
+  useEffect(() => {
+    if (rightAnswers === 10) {
+      setAllCorrect(true);
+    }
+  }, [allCorrect]);
 
   const onExitPage = () => {
     setIsClicked(false);
@@ -19,7 +25,7 @@ const ResultsDisplay = (props) => {
 
   const results = props.correctArr.map((elem, index) => {
     return (
-      <>
+      <div className="px-10">
         <h1
           className={`text-xl   my-12 font-press-start ${
             elem === "right" ? "text-[#3cfa23]" : "text-[#540808]"
@@ -46,7 +52,7 @@ const ResultsDisplay = (props) => {
         >
           {`Correct Answer: ${props.questions[index].correct_answer}`}
         </h1>
-      </>
+      </div>
     );
   });
 
@@ -55,7 +61,7 @@ const ResultsDisplay = (props) => {
       <div className="bg-[#0d1137] ">
         <div className="flex flex-col justify-center items-center text-center  min-h-screen">
           <div className="rounded-lg shadow-lg bg-[#e52165] max-w-[1300px] h-auto">
-            <h1 className="text-white text-3xl font-press-start mt-5">{`Your Score: ${rightAnswers}/10`}</h1>
+            <h1 className="text-white text-3xl font-press-start mt-5 phone:mt-[80px]">{`Your Score: ${rightAnswers}/10`}</h1>
 
             {results}
             {<AudioPlayer url={wiiMusic1} isClicked={isClicked} />}
@@ -64,7 +70,7 @@ const ResultsDisplay = (props) => {
               to="/"
               disabled
               onClick={() => {
-                setInterval(() => window.location.reload(true), 100);
+                setInterval(() => window.location.reload(true), 10);
                 props.resetAnswerArray();
                 onExitPage();
               }}

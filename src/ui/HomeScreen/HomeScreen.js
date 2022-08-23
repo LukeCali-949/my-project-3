@@ -10,8 +10,10 @@ const HomeScreen = () => {
   return (
     <div>
       <div className="w-full bg-[#e52165] h-screen absolute -z-10"></div>
+      <div className="w-full h-5 bg-[#0d1137] absolute top-[50px]"></div>
+      <div className="w-full h-5 bg-[#0d1137] absolute bottom-[50px]"></div>
       <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-c font-press-start mb-3">
+        <h1 className="phone:text-[12px] font-press-start mb-3">
           Welcome to ultimate trivia!
         </h1>
         <Link

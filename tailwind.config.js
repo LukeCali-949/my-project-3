@@ -11,6 +11,9 @@ module.exports = {
         "press-start": ['"Press Start 2P"', "cursive"],
       },
     },
+    screens: {
+      phone: { max: "500px" },
+    },
   },
   plugins: [],
 };

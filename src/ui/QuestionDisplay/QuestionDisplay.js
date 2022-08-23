@@ -55,7 +55,8 @@ const QuestionDisplay = (props) => {
     .replaceAll("&euml;", "ë")
     .replaceAll("&ldquo;", '"')
     .replaceAll("&rdquo;", '"')
-    .replaceAll("&deg;", "°");
+    .replaceAll("&deg;", "°")
+    .replaceAll("&atilde;", "`");
   // console.log(props.questions);
 
   const onClickEvent = (event) => {
@@ -79,7 +80,7 @@ const QuestionDisplay = (props) => {
     return (
       <>
         <div
-          className={`flex mb-3 w-full rounded bg-[#e52165] text-3xl hover:cursor-pointer  hover:scale-[1.02] hover:duration-100 hover:ease-in-out hover:shadow-[0_0.4rem_1.4rem_0_rgba(6,103,247,0.5)] focus:bg-orange-600`}
+          className={`flex phone:min-h-[30px] mb-3 w-full phone:w-[300px] phone:text-sm rounded bg-[#e52165] text-3xl hover:cursor-pointer  hover:scale-[1.02] hover:duration-100 hover:ease-in-out hover:shadow-[0_0.4rem_1.4rem_0_rgba(6,103,247,0.5)] focus:bg-orange-600`}
           onClick={onClickEvent}
           id={["A", "B", "C", "D"][index]}
         >
@@ -98,7 +99,8 @@ const QuestionDisplay = (props) => {
               .replaceAll("&euml;", "ë")
               .replaceAll("&ldquo;", '"')
               .replaceAll("&rdquo;", '"')
-              .replaceAll("&deg;", "°")}
+              .replaceAll("&deg;", "°")
+              .replaceAll("&atilde;", "`")}
           </p>
         </div>
       </>
@@ -114,10 +116,12 @@ const QuestionDisplay = (props) => {
     <>
       <div className="w-full bg-[#0d1137] h-screen absolute -z-10"></div>
       <div className=" flex flex-col max-w-[50rem] items-center justify-center h-screen  mx-auto font-press-start">
-        <h1 className="text-white text-3xl max-w-4xl mb-10">{question}</h1>
-        <h1 className="text-white">{`Question: ${questionId}/10`}</h1>
+        <h1 className="text-white phone:text-sm phone:px-[50px] text-3xl max-w-4xl mb-10">
+          {question}
+        </h1>
+        <h1 className="text-white phone:text-sm">{`Question: ${questionId}/10`}</h1>
         {questions}
-        <h1 className="text-white">{`Your Answer: ${chosenAnswer}`}</h1>
+        <h1 className="text-white phone:text-sm">{`Your Answer: ${chosenAnswer}`}</h1>
         {/* <h1 className="text-white">{`Your answer is: ${rightOrWrong}`}</h1> */}
         {chosenAnswer === "Not Selected" && (
           <div className="absolute px-[250px] py-[70px] bg-transparent top-[720px] z-20 opacity-10 hover:cursor-not-allowed"></div>
